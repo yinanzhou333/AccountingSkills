@@ -72,3 +72,14 @@ rpart.plot(model)
 company_predictions <- predict(model, newdata = company, type = "class")
 train_accuracy <- sum(company_predictions == company$Bankrupt. )/ length(company$Bankrupt.)
 cat("Training Accuracy:", train_accuracy, "\n")
+
+# Perform Principal Component Analysis (PCA).
+pca_result <- prcomp(company[, !names(company) %in% c("Liability.Assets.Flag", "Net.Income.Flag")], scale. = TRUE)
+
+# Access loadings for the first principal component
+loadings_first_pc <- pca_result$rotation[, 1]
+# Order attributes by absolute loading values
+ordered_attributes <- names(sort(abs(loadings_first_pc), decreasing = TRUE))
+# Display the most important attributes
+top_attributes <- head(ordered_attributes, 10)  # Adjust the number as needed
+top_attributes
